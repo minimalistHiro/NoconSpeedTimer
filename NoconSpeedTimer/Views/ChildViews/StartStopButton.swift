@@ -11,21 +11,12 @@ struct StartStopButton: View {
     @ObservedObject var viewModel = ContentViewModel.shared
     
     var body: some View {
-        if viewModel.mode == .start {
+        switch viewModel.mode {
+        case .start:
             Button {
                 viewModel.mode = .stop
                 viewModel.applyButtons()
-            } label: {
-                Image(systemName: "play.fill")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: buttonSize, height: buttonSize)
-                    .foregroundColor(able)
-            }
-        } else if viewModel.mode == .stop {
-            Button {
-                viewModel.mode = .start
-                viewModel.applyButtons()
+                UIImpactFeedbackGenerator(style: .light).impactOccurred()
             } label: {
                 Image(systemName: "pause.fill")
                     .resizable()
@@ -33,10 +24,25 @@ struct StartStopButton: View {
                     .frame(width: buttonSize, height: buttonSize)
                     .foregroundColor(able)
             }
-        } else {
-            // 空白のボタン
-            Button { } label: {
-                Image(systemName: "")
+        case .stop:
+            Button {
+                viewModel.mode = .start
+                viewModel.applyButtons()
+                UIImpactFeedbackGenerator(style: .light).impactOccurred()
+            } label: {
+                Image(systemName: "play.fill")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: buttonSize, height: buttonSize)
+                    .foregroundColor(able)
+            }
+        case .zero:
+            Button {
+                viewModel.mode = .start
+                viewModel.applyButtons()
+                UIImpactFeedbackGenerator(style: .light).impactOccurred()
+            } label: {
+                Image(systemName: "play.fill")
                     .resizable()
                     .scaledToFit()
                     .frame(width: buttonSize, height: buttonSize)

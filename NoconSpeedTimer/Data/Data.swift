@@ -10,7 +10,7 @@ import SwiftUI
 // Viewのサイズ
 let timerLabelFrameWidth: CGFloat = 45                  // 時間表示テキストのフレーム横幅
 let buttonSize: CGFloat = 35                            // ボタンサイズ
-let keyboardTextSize: CGFloat = 30                      // キーボード文字サイズ
+let keyboardTextSize: CGFloat = 40                      // キーボード文字サイズ
 let keyboardFrameSize: CGFloat = 60                     // キーボードフレームサイズ
 
 // 固定色

@@ -11,7 +11,8 @@ struct ResetButton: View {
     @ObservedObject var viewModel = ContentViewModel.shared
     
     var body: some View {
-        if viewModel.mode == .start {
+        switch viewModel.mode {
+        case .start:
             // 空白のボタン
             Button { } label: {
                 Image(systemName: "")
@@ -19,11 +20,13 @@ struct ResetButton: View {
                     .scaledToFit()
                     .frame(width: buttonSize, height: buttonSize)
                     .foregroundColor(able)
+                    .disabled(true)
             }
-        } else if viewModel.mode == .stop {
+        case .stop:
             Button {
                 viewModel.mode = .zero
                 viewModel.applyButtons()
+                UIImpactFeedbackGenerator(style: .light).impactOccurred()
             } label: {
                 Image(systemName: "stop.fill")
                     .resizable()
@@ -31,14 +34,29 @@ struct ResetButton: View {
                     .frame(width: buttonSize, height: buttonSize)
                     .foregroundColor(able)
             }
-        } else {
-            // 空白のボタン
-            Button { } label: {
-                Image(systemName: "")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: buttonSize, height: buttonSize)
-                    .foregroundColor(able)
+        case .zero:
+            if viewModel.elapsedTime != 0 {
+                Button {
+                    viewModel.mode = .zero
+                    viewModel.applyButtons()
+                    UIImpactFeedbackGenerator(style: .light).impactOccurred()
+                } label: {
+                    Image(systemName: "stop.fill")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: buttonSize, height: buttonSize)
+                        .foregroundColor(able)
+                }
+            } else {
+                // 空白のボタン
+                Button { } label: {
+                    Image(systemName: "")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: buttonSize, height: buttonSize)
+                        .foregroundColor(able)
+                        .disabled(true)
+                }
             }
         }
     }

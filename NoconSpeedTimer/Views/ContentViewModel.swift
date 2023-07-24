@@ -11,8 +11,8 @@ import AVFoundation
 final class ContentViewModel: ObservableObject {
     static var shared: ContentViewModel = ContentViewModel()
     
+    var timer = Timer()
     @Published var mode: TimerMode = .zero
-    var timer = Timer()                                                     // タイマー
     @Published var tappedKeyboardTime: Double = 0.0         // キーボード入力から次のキーボード入力までの時間
     @Published var isTimerStart: Bool = false               // true:タイマースタート, false:タイマーストップ
     var backgroundTaskId = UIBackgroundTaskIdentifier.init(rawValue: 0)     // バックグラウンド用トークン
@@ -71,27 +71,33 @@ final class ContentViewModel: ObservableObject {
         elapsedTime = Double(displayText)! * 60
         
         // 入力後の時間計測用変数が0の場合、何もせず返す。
-        if elapsedTime == 0 {
-            return
-        }
+//        if elapsedTime == 0 {
+//            return
+//        }
         //　2桁数字を打たれた時のために、一度初期化する。
-        tappedKeyboardTime = 0
-        isTimerStart = false
-        timer.invalidate()
+//        tappedKeyboardTime = 0
+//        isTimerStart = false
+//        timer.invalidate()
         // キーボード入力から1秒後に自動的にタイマーをスタートする。
-        timer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { [self] _ in
-            tappedKeyboardTime += 1.0
-            // 2秒後、タイマーをスタートさせる。
-            if tappedKeyboardTime >= 1 {
-                isTimerStart = true
-            }
-        }
+//        timer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: false) { [self] _ in
+//            tappedKeyboardTime += 1.0
+//            // 2秒後、タイマーをスタートさせる。
+//            if tappedKeyboardTime >= 1 {
+//                isTimerStart = true
+//            }
+//        }
     }
     
     ///　タイマーを開始
     /// - Parameters: なし
     /// - Returns: なし
     func startTime() {
+        // 入力後の時間計測用変数が0の場合、何もせず返す。
+        if elapsedTime == 0 {
+            mode = .zero
+            return
+        }
+        
         timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [self] _ in
             // タイマーをメインスレッドと別スレッドで実行。
             RunLoop.current.add(timer, forMode: RunLoop.Mode.common)
@@ -100,7 +106,7 @@ final class ContentViewModel: ObservableObject {
             
             // 時間計測用変数が0になったら場合、タイマーをリセットする。
             if (elapsedTime - 1) < 0 {
-                UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
+//                UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
                 alert.playSound()
                 mode = .zero
                 applyButtons()

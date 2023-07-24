@@ -12,6 +12,8 @@ struct ContentView: View {
     
     var body: some View {
         VStack {
+            Spacer()
+            
             HStack(spacing: 5) {
                 Text(viewModel.minutesTensPlace)
                     .frame(width: timerLabelFrameWidth, alignment: .trailing)
@@ -25,6 +27,8 @@ struct ContentView: View {
             }
             .font(.system(size: 80))
             
+            Spacer()
+            
             HStack(spacing: 10) {
                 Spacer()
                 ResetButton()
@@ -32,7 +36,8 @@ struct ContentView: View {
                 StartStopButton()
                 Spacer()
             }
-            .padding(.bottom, 70)
+            
+            Spacer()
             
             LazyVGrid(columns: Array(repeating: GridItem(), count: 3)) {
                 ForEach(1..<10) { num in
@@ -50,6 +55,8 @@ struct ContentView: View {
                     .padding()
                 }
             }
+            .padding(.horizontal)
+            
             Button {
                 if viewModel.mode == .zero {
                     viewModel.applyKeyboard(0)
@@ -61,6 +68,8 @@ struct ContentView: View {
                     .foregroundColor(able)
             }
             .padding()
+            
+            Spacer()
         }
         .onChange(of: viewModel.isTimerStart) { value in
             // キーボード入力後、タイマーを自動的にスタートする。
