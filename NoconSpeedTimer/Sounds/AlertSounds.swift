@@ -11,10 +11,14 @@ import AVFoundation
 class AlertSounds: NSObject {
     let data = NSDataAsset(name: "AlertSounds")!.data
     var player: AVAudioPlayer!
+    let audioSession = AVAudioSession.sharedInstance()
     
     func playSound() {
         do {
             player = try AVAudioPlayer(data: data)
+            // マナーモードでも音を鳴らすようにする
+            try audioSession.setCategory(.playback)
+            
             player.stop()
             player.currentTime = 0.0
             player.play()
